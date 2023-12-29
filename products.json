@@ -1,0 +1,51 @@
+[
+    {
+    
+        "id":1,
+    "name":"green sport shoe",
+    "price":1500,
+        "category":"shoe",
+         "thumb":"images/products/shoe1-1.jpg"
+    },
+    {
+    
+        "id":2,
+    "name":"brown sport shoe",
+    "price":1750,
+        "category":"shoe",
+         "thumb":"images/products/shoe1-3.jpg"
+    },{
+    
+        "id":3,
+    "name":"red nike shoe",
+    "price":1450,
+        "category":"shoe",
+         "thumb":"images/products/shoe1.jpg"
+    },{
+    
+        "id":4,
+    "name":"laptop dell",
+    "price":24560,
+        "category":"electronic",
+         "thumb":"images/products/electronic1.jpg"
+    },
+    {
+    
+        "id":5,
+    "name":"samsung smartphone",
+    "price":18960,
+        "category":"electronic",
+         "thumb":"images/products/electronic2.jpg"
+    },
+    {
+    
+        "id":6,
+    "name":"smart earphones",
+    "price":3670,
+        "category":"electronic",
+         "thumb":"images/products/electronic3.jpg"
+    }
+    
+    
+    
+    ]
