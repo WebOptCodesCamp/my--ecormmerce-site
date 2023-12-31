@@ -10,10 +10,10 @@
     {
     
         "id":2,
-    "name":"brown sport shoe",
+    "name":"pinky rubber shoe",
     "price":1750,
         "category":"shoe",
-         "thumb":"images/products/shoe1-3.jpg"
+         "thumb":"images/products/shoe3.jpg"
     },{
     
         "id":3,

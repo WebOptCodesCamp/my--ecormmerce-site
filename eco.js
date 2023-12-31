@@ -1,57 +1,22 @@
 let content = document.querySelector(".content");
-let products = [
-  {
-  
-      "id":1,
-  "name":"green sport shoe",
-  "price":1500,
-      "category":"shoe",
-       "thumb":"images/products/shoe1-1.jpg"
-  },
-  {
-  
-      "id":2,
-  "name":"brown sport shoe",
-  "price":1750,
-      "category":"shoe",
-       "thumb":"images/products/shoe1-3.jpg"
-  },{
-  
-      "id":3,
-  "name":"red nike shoe",
-  "price":1450,
-      "category":"shoe",
-       "thumb":"images/products/shoe1.jpg"
-  },{
-  
-      "id":4,
-  "name":"laptop dell",
-  "price":24560,
-      "category":"electronic",
-       "thumb":"images/products/electronic1.jpg"
-  },
-  {
-  
-      "id":5,
-  "name":"samsung smartphone",
-  "price":18960,
-      "category":"electronic",
-       "thumb":"images/products/electronic2.jpg"
-  },
-  {
-  
-      "id":6,
-  "name":"smart earphones",
-  "price":3670,
-      "category":"electronic",
-       "thumb":"images/products/electronic3.jpg"
-  }
-  
-  
-  
-  ];
+let inouttext = document.querySelector(".txt");
 
+let products = [];
+fetch("products.json").then(response =>response.json()).then(data=>{
+   products = data;
+   addtohtml();
+})
 
+function load(){
+  if (inouttext.value === "") {
+    fetch("products.json").then(response =>response.json()).then(data=>{
+      products = data;
+      addtohtml();
+   })
+  }else{
+products = products.filter((product)=> product.name.toLowerCase().includes(inouttext.value.toLowerCase()));
+addtohtml();}
+}
 
 const addtohtml = () =>{
 content.innerHTML = "";
@@ -108,19 +73,26 @@ content.addEventListener("click",(e)=>{
 
 
   const addtocart = (id) =>{
-    let checkpos = carts.findIndex((value)=> value.id == id);
+    let checkpos = carts.findIndex((value)=> value.id === id);
     if(carts.length < 1){
      carts = [
       { 
         id:id,
-        quantity:1
+        quantity:1,
+        thumb:products[id-1].thumb,
+        price:products[id-1].price,
+        name:products[id-1].name
       }
      ]
     
     }else if(checkpos < 0){
   carts.push({
     id:id,
-    quantity:1
+    quantity:1,thumb:products[id-1].thumb,
+    price:products[id-1].price,
+    name:products[id-1].name
+
+
   });
 
     }else{
@@ -128,27 +100,62 @@ content.addEventListener("click",(e)=>{
 
     }
 
-  displaycart(carts)
-  };
 
-const  displaycart = (mycart) =>{
+
+  
 let cartlist = document.querySelector(".cartlist");
-
-mycart.forEach((val)=>{
-  let pos = products.findIndex((prod)=>prod.id == val.id );
+cartlist.innerHTML = "";
+carts.forEach(cart=>{
 
 let cartitem = document.createElement("div");
 cartitem.classList.add("cartitem");
 cartitem.innerHTML = `
 <div class="imagecon">
-<img src="${products[pos].thumb}" class="cartimg"/>
+<img src="${cart.thumb}" class="cartimg"/>
 </div>
-<div class ="cartdetails"></div>
+<div class ="cartdetails">
+<h4 class="itemname">item_name: <span class="spn">${cart.name}</span></h4>
+<h4 class="itemname" style="margin-top:12px">unit_price: <span class="spn">${cart.price}</span></h4>
+<h4 class="itemname" style="margin-top:12px">item_quantity: <span class="spn">${cart.quantity}</span></h4>
+<div class="left">
+<input type="number" class="inp" value="${cart.quantity}"  id="${cart.id}" data-id="${cart.id}" oninput="addtocart()"/>
+</div>
+<h4 class="itemname" style="margin-top:16px;margin-left:18px;font-weight:150;color:red">total_price: <span class="spn" style="color:blue">${cart.quantity*cart.price}</span></h4>
 
-
+</div>
 
 `
-cartlist.appendChild(cartitem)
+
+cartlist.appendChild(cartitem);
+let mystring = cart.id.toString();
+let sltinput = document.getElementById(mystring);
+sltinput.addEventListener("change", function(){
+let id = sltinput.dataset.id;
+
+
+let whereupdation = carts.findIndex((cart)=> cart.id == id);
+
+if (carts[whereupdation].quantity === eval(sltinput.value)) {
+  carts[whereupdation].quantity = eval(sltinput.value);
+  
+} else if(carts[whereupdation].quantity < eval(sltinput.value)) {
+  carts[whereupdation].quantity +=  eval(sltinput.value)-carts[whereupdation].quantity;
+  
+}else{
+
+  carts[whereupdation].quantity -= carts[whereupdation].quantity - eval(sltinput.value);
+   
+
+}
+let ItemIndex = carts.findIndex((cart)=> cart.quantity < 1);
+if(ItemIndex){
+
+  carts.splice(0,ItemIndex);
+
+
+}
+})
+
 
 
 })
@@ -156,6 +163,45 @@ cartlist.appendChild(cartitem)
 
 
 
-}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*carts.forEach((val)=>{
+
+let cartitem = document.createElement("div");
+cartitem.classList.add("cartitem");
+cartitem.innerHTML = `
+
+
+
+
+`
+cartlist.appendChild(cartitem)
+
+
+})*/
+
+
+
+
+
+
+  };
 
